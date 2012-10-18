@@ -13,8 +13,8 @@ default:
 
 clean:
 	#make -C ${KSRC} M=`pwd` clean
-        rm *.o *.ko Module.symvers modules.order .*.cmd .tmp_versions/*
-        rmdir .tmp_versions
+	rm *.o *.ko Module.symvers modules.order .*.cmd .tmp_versions/*
+	rmdir .tmp_versions
 
 install:
 	make -C ${KSRC} M=`pwd` modules_install
