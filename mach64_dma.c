@@ -34,8 +34,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "drmP.h"
-#include "drm.h"
+#include <drm/drmP.h>
 #include "mach64_drm.h"
 #include "mach64_drv.h"
 

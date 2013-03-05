@@ -29,12 +29,11 @@
 
 #include <linux/module.h>
 
-#include "drmP.h"
-#include "drm.h"
+#include <drm/drmP.h>
 #include "mach64_drm.h"
 #include "mach64_drv.h"
 
-#include "drm_pciids.h"
+#include <drm/drm_pciids.h>
 
 static struct pci_device_id pciidlist[] = {
 	mach64_PCI_IDS
