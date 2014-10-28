@@ -5,5 +5,3 @@ mach64 DRM module TODO
  - properly kill X when logging out
  - clean up video memory each time we kill X
  - suspend without crashing X (implies switching to vt1)
-- support for 24bpp color depth
-- fix EXA acceleration
