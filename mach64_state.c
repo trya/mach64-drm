@@ -51,7 +51,7 @@ struct drm_ioctl_desc mach64_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(MACH64_GETPARAM, mach64_get_param, DRM_AUTH),
 };
 
-int mach64_max_ioctl = DRM_ARRAY_SIZE(mach64_ioctls);
+int mach64_max_ioctl = ARRAY_SIZE(mach64_ioctls);
 
 /* ================================================================
  * DMA hardware state programming functions
@@ -493,7 +493,7 @@ static __inline__ int copy_from_user_vertex(u32 *to,
 	if (from == NULL)
 		return -ENOMEM;
 
-	if (DRM_COPY_FROM_USER(from, ufrom, bytes)) {
+	if (copy_from_user(from, ufrom, bytes)) {
 		kfree(from);
 		return -EFAULT;
 	}
@@ -639,7 +639,7 @@ static __inline__ int copy_from_user_blit(u32 *to,
 {
 	to = (u32 *)((char *)to + MACH64_HOSTDATA_BLIT_OFFSET);
 
-	if (DRM_COPY_FROM_USER(to, ufrom, bytes)) {
+	if (copy_from_user(to, ufrom, bytes)) {
 		return -EFAULT;
 	}
 
@@ -894,13 +894,13 @@ int mach64_get_param(struct drm_device *dev, void *data,
 		value = mach64_do_get_frames_queued(dev_priv);
 		break;
 	case MACH64_PARAM_IRQ_NR:
-		value = drm_dev_to_irq(dev);
+		value = dev->pdev->irq;
 		break;
 	default:
 		return -EINVAL;
 	}
 
-	if (DRM_COPY_TO_USER(param->value, &value, sizeof(int))) {
+	if (copy_to_user(param->value, &value, sizeof(int))) {
 		DRM_ERROR("copy_to_user\n");
 		return -EFAULT;
 	}

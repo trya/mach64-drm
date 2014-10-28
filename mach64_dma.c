@@ -695,9 +695,9 @@ do {									\
 		DRM_INFO( "ADVANCE_RING() wr=0x%06x tail=0x%06x\n",	\
 			  _ring_write, _ring_tail );			\
 	}								\
-	DRM_MEMORYBARRIER();						\
+	mb();						\
 	mach64_clear_dma_eol( &_ring[(_ring_tail - 2) & _ring_mask] );	\
-	DRM_MEMORYBARRIER();						\
+	mb();						\
 	dev_priv->ring.tail = _ring_write;				\
 	mach64_ring_tick( dev_priv, &(dev_priv)->ring );		\
 } while (0)
@@ -911,7 +911,7 @@ static int mach64_bm_dma_test(struct drm_device * dev)
 		DRM_DEBUG(" data[%d] = 0x%08x\n", i, data[i]);
 	}
 
-	DRM_MEMORYBARRIER();
+	mb();
 
 	DRM_DEBUG("waiting for idle...\n");
 	if ((i = mach64_do_wait_for_idle(dev_priv))) {
@@ -1715,10 +1715,10 @@ static int mach64_dma_get_buffers(struct drm_device *dev,
 
 		buf->file_priv = file_priv;
 
-		if (DRM_COPY_TO_USER(&d->request_indices[i], &buf->idx,
+		if (copy_to_user(&d->request_indices[i], &buf->idx,
 				     sizeof(buf->idx)))
 			return -EFAULT;
-		if (DRM_COPY_TO_USER(&d->request_sizes[i], &buf->total,
+		if (copy_to_user(&d->request_sizes[i], &buf->total,
 				     sizeof(buf->total)))
 			return -EFAULT;
 

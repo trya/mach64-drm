@@ -33,7 +33,28 @@
 #include "mach64_drm.h"
 #include "mach64_drv.h"
 
-#include <drm/drm_pciids.h>
+#define mach64_PCI_IDS \
+	{0x1002, 0x4749, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4750, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4751, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4742, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4744, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c49, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c50, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c51, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c42, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c44, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x474c, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x474f, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4752, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4753, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x474d, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x474e, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c52, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c53, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c4d, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0x1002, 0x4c4e, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0}, \
+	{0, 0, 0}
 
 static struct pci_device_id pciidlist[] = {
 	mach64_PCI_IDS
@@ -46,13 +67,12 @@ static const struct file_operations mach64_driver_fops = {
 	.unlocked_ioctl = drm_ioctl,
 	.mmap = drm_mmap,
 	.poll = drm_poll,
-	.fasync = drm_fasync,
 	.llseek = noop_llseek,
 };
 
 static struct drm_driver driver = {
 	.driver_features =
-	    DRIVER_USE_AGP | DRIVER_USE_MTRR | DRIVER_PCI_DMA | DRIVER_HAVE_DMA
+	    DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_HAVE_DMA
 	    | DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED,
 	.lastclose = mach64_driver_lastclose,
 	.get_vblank_counter = mach64_get_vblank_counter,
