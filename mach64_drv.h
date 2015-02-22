@@ -35,6 +35,8 @@
 #ifndef __MACH64_DRV_H__
 #define __MACH64_DRV_H__
 
+#include <drm/ati_pcigart.h>
+#include <drm/drm_legacy.h>
 /* General customization:
  */
 

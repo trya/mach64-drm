@@ -65,7 +65,7 @@ static const struct file_operations mach64_driver_fops = {
 	.open = drm_open,
 	.release = drm_release,
 	.unlocked_ioctl = drm_ioctl,
-	.mmap = drm_mmap,
+	.mmap = drm_legacy_mmap,
 	.poll = drm_poll,
 	.llseek = noop_llseek,
 };
@@ -75,6 +75,7 @@ static struct drm_driver driver = {
 	    DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_HAVE_DMA
 	    | DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED,
 	.lastclose = mach64_driver_lastclose,
+	.set_busid = drm_pci_set_busid,
 	.get_vblank_counter = mach64_get_vblank_counter,
 	.enable_vblank = mach64_enable_vblank,
 	.disable_vblank = mach64_disable_vblank,
