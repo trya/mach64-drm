@@ -1,7 +1,0 @@
-mach64 DRM module TODO
-----------------------
-
-- switch between VTs without crashing X
- - properly kill X when logging out
- - clean up video memory each time we kill X
- - suspend without crashing X (implies switching to vt1)
