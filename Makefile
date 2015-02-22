@@ -12,9 +12,7 @@ default:
 	make -C ${KSRC} M=`pwd` modules
 
 clean:
-	#make -C ${KSRC} M=`pwd` clean
-	rm *.o *.ko Module.symvers modules.order .*.cmd .tmp_versions/*
-	rmdir .tmp_versions
+	make -C ${KSRC} M=`pwd` clean
 
 install:
 	make -C ${KSRC} M=`pwd` modules_install
