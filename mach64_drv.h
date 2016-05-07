@@ -165,9 +165,9 @@ extern int mach64_dma_blit(struct drm_device *dev, void *data,
 extern int mach64_get_param(struct drm_device *dev, void *data,
 			    struct drm_file *file_priv);
 
-extern u32 mach64_get_vblank_counter(struct drm_device *dev, int crtc);
-extern int mach64_enable_vblank(struct drm_device *dev, int crtc);
-extern void mach64_disable_vblank(struct drm_device *dev, int crtc);
+extern u32 mach64_get_vblank_counter(struct drm_device *dev, unsigned int pipe);
+extern int mach64_enable_vblank(struct drm_device *dev, unsigned int pipe);
+extern void mach64_disable_vblank(struct drm_device *dev, unsigned int pipe);
 extern irqreturn_t mach64_driver_irq_handler(int irq, void *arg);
 extern void mach64_driver_irq_preinstall(struct drm_device *dev);
 extern int mach64_driver_irq_postinstall(struct drm_device *dev);
