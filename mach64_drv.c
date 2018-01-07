@@ -75,7 +75,6 @@ static struct drm_driver driver = {
 	    DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_HAVE_DMA
 	    | DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED,
 	.lastclose = mach64_driver_lastclose,
-	.set_busid = drm_pci_set_busid,
 	.get_vblank_counter = mach64_get_vblank_counter,
 	.enable_vblank = mach64_enable_vblank,
 	.disable_vblank = mach64_disable_vblank,
@@ -102,12 +101,12 @@ static struct pci_driver mach64_pci_driver = {
 static int __init mach64_init(void)
 {
 	driver.num_ioctls = mach64_max_ioctl;
-	return drm_pci_init(&driver, &mach64_pci_driver);
+	return drm_legacy_pci_init(&driver, &mach64_pci_driver);
 }
 
 static void __exit mach64_exit(void)
 {
-	drm_pci_exit(&driver, &mach64_pci_driver);
+	drm_legacy_pci_exit(&driver, &mach64_pci_driver);
 }
 
 module_init(mach64_init);
