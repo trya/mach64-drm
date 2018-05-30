@@ -73,7 +73,7 @@ static const struct file_operations mach64_driver_fops = {
 static struct drm_driver driver = {
 	.driver_features =
 	    DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_HAVE_DMA
-	    | DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED,
+	    | DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED | DRIVER_LEGACY,
 	.lastclose = mach64_driver_lastclose,
 	.get_vblank_counter = mach64_get_vblank_counter,
 	.enable_vblank = mach64_enable_vblank,
