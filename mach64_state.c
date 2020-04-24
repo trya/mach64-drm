@@ -30,7 +30,11 @@
  *    José Fonseca <j_r_fonseca@yahoo.co.uk>
  */
 
-#include <drm/drmP.h>
+#include <linux/pci.h>
+
+#include <drm/drm_device.h>
+#include <drm/drm_file.h>
+
 #include "mach64_drm.h"
 #include "mach64_drv.h"
 
@@ -778,7 +782,7 @@ int mach64_dma_clear(struct drm_device *dev, void *data,
 	drm_mach64_clear_t *clear = data;
 	int ret;
 
-	DRM_DEBUG("pid=%d\n", DRM_CURRENTPID);
+	DRM_DEBUG("pid=%d\n", task_pid_nr(current));
 
 	LOCK_TEST_WITH_RETURN(dev, file_priv);
 
@@ -803,7 +807,7 @@ int mach64_dma_swap(struct drm_device *dev, void *data,
 	drm_mach64_sarea_t *sarea_priv = dev_priv->sarea_priv;
 	int ret;
 
-	DRM_DEBUG("pid=%d\n", DRM_CURRENTPID);
+	DRM_DEBUG("pid=%d\n", task_pid_nr(current));
 
 	LOCK_TEST_WITH_RETURN(dev, file_priv);
 
@@ -833,7 +837,7 @@ int mach64_dma_vertex(struct drm_device *dev, void *data,
 	}
 
 	DRM_DEBUG("pid=%d buf=%p used=%lu discard=%d\n",
-		  DRM_CURRENTPID,
+		  task_pid_nr(current),
 		  vertex->buf, vertex->used, vertex->discard);
 
 	if (vertex->prim < 0 || vertex->prim > MACH64_PRIM_POLYGON) {

@@ -34,7 +34,13 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <drm/drmP.h>
+#include <linux/delay.h>
+#include <linux/dma-mapping.h>
+
+#include <drm/drm_device.h>
+#include <drm/drm_file.h>
+#include <drm/drm_pci.h>
+
 #include "mach64_drm.h"
 #include "mach64_drv.h"
 
@@ -64,7 +70,7 @@ int mach64_do_wait_for_fifo(drm_mach64_private_t *dev_priv, int entries)
 		slots = (MACH64_READ(MACH64_FIFO_STAT) & MACH64_FIFO_SLOT_MASK);
 		if (slots <= (0x8000 >> entries))
 			return 0;
-		DRM_UDELAY(1);
+		udelay(1);
 	}
 
 	DRM_INFO("failed! slots=%d entries=%d\n", slots, entries);
@@ -85,7 +91,7 @@ int mach64_do_wait_for_idle(drm_mach64_private_t *dev_priv)
 	for (i = 0; i < dev_priv->usec_timeout; i++) {
 		if (!(MACH64_READ(MACH64_GUI_STAT) & MACH64_GUI_ACTIVE))
 			return 0;
-		DRM_UDELAY(1);
+		udelay(1);
 	}
 
 	DRM_INFO("failed! GUI_STAT=0x%08x\n", MACH64_READ(MACH64_GUI_STAT));
@@ -124,7 +130,7 @@ int mach64_wait_ring(drm_mach64_private_t *dev_priv, int n)
 				DRM_DEBUG("%d usecs\n", i);
 			return 0;
 		}
-		DRM_UDELAY(1);
+		udelay(1);
 	}
 
 	/* FIXME: This is being ignored... */
@@ -160,7 +166,7 @@ static int mach64_ring_idle(drm_mach64_private_t *dev_priv)
 			head = ring->head;
 			i = 0;
 		}
-		DRM_UDELAY(1);
+		udelay(1);
 	}
 
 	DRM_INFO("failed! GUI_STAT=0x%08x\n", MACH64_READ(MACH64_GUI_STAT));
@@ -1644,7 +1650,7 @@ struct drm_buf *mach64_freelist_get(drm_mach64_private_t *dev_priv)
 			if (ret < 0)
 				return NULL;
 
-			DRM_UDELAY(1);
+			udelay(1);
 		}
 		mach64_dump_ring_info(dev_priv);
 		DRM_ERROR
@@ -1740,7 +1746,7 @@ int mach64_dma_buffers(struct drm_device *dev, void *data,
 	 */
 	if (d->send_count != 0) {
 		DRM_ERROR("Process %d trying to send %d buffers via drmDMA\n",
-			  DRM_CURRENTPID, d->send_count);
+			  task_pid_nr(current), d->send_count);
 		return -EINVAL;
 	}
 
@@ -1748,7 +1754,7 @@ int mach64_dma_buffers(struct drm_device *dev, void *data,
 	 */
 	if (d->request_count < 0 || d->request_count > dma->buf_count) {
 		DRM_ERROR("Process %d trying to get %d buffers (of %d max)\n",
-			  DRM_CURRENTPID, d->request_count, dma->buf_count);
+			  task_pid_nr(current), d->request_count, dma->buf_count);
 		ret = -EINVAL;
 	}
 

@@ -35,8 +35,13 @@
 #ifndef __MACH64_DRV_H__
 #define __MACH64_DRV_H__
 
-#include <drm/ati_pcigart.h>
+#include <linux/irqreturn.h>
+
 #include <drm/drm_legacy.h>
+#include <drm/drm_print.h>
+#include <drm/drm_ioctl.h>
+#include <drm/drm_irq.h>
+
 /* General customization:
  */
 
@@ -489,8 +494,8 @@ extern void mach64_driver_irq_uninstall(struct drm_device *dev);
 #define MACH64_DATATYPE_AYUV444				14
 #define MACH64_DATATYPE_ARGB4444			15
 
-#define MACH64_READ(reg)	DRM_READ32(dev_priv->mmio, (reg) )
-#define MACH64_WRITE(reg,val)	DRM_WRITE32(dev_priv->mmio, (reg), (val) )
+#define MACH64_READ(reg)	readl(((void __iomem *)dev_priv->mmio->handle) + (reg))
+#define MACH64_WRITE(reg,val)	writel(val, ((void __iomem *)dev_priv->mmio->handle) + (reg))
 
 #define DWMREG0		0x0400
 #define DWMREG0_END	0x07ff
