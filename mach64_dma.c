@@ -36,10 +36,10 @@
 
 #include <linux/delay.h>
 #include <linux/dma-mapping.h>
+#include <linux/pci.h>
 
 #include <drm/drm_device.h>
 #include <drm/drm_file.h>
-#include <drm/drm_pci.h>
 
 #include "mach64_drm.h"
 #include "mach64_drv.h"
