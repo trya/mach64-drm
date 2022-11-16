@@ -40,9 +40,41 @@
 
 #include <drm/drm_device.h>
 #include <drm/drm_file.h>
+#include <drm/drm_legacy.h>
 
 #include "mach64_drm.h"
 #include "mach64_drv.h"
+
+static drm_dma_handle_t *drm_pci_alloc(struct drm_device * dev, size_t size, size_t align)
+{
+	drm_dma_handle_t *dmah;
+
+	/* pci_alloc_consistent only guarantees alignment to the smallest
+	 * PAGE_SIZE order which is greater than or equal to the requested size.
+	 * Return NULL here for now to make sure nobody tries for larger alignment
+	 */
+	if (align > size)
+		return NULL;
+
+	dmah = kmalloc(sizeof(*dmah), GFP_KERNEL);
+	if (!dmah)
+		return NULL;
+
+	dmah->size = size;
+	dmah->vaddr = dma_alloc_coherent(dev->dev, size, &dmah->busaddr, GFP_KERNEL);
+
+	if (dmah->vaddr == NULL) {
+		kfree(dmah);
+		return NULL;
+	}
+	return dmah;
+}
+
+static void drm_pci_free(struct drm_device * dev, drm_dma_handle_t * dmah)
+{
+	dma_free_coherent(dev->dev, dmah->size, dmah->vaddr, dmah->busaddr);
+	kfree(dmah);
+}
 
 /*******************************************************************/
 /** \name Engine, FIFO control */
@@ -1374,7 +1406,7 @@ int mach64_do_cleanup_dma(struct drm_device * dev)
 	 * may not have been called from userspace and after dev_private
 	 * is freed, it's too late.
 	 */
-	drm_irq_uninstall(dev);
+	drm_legacy_irq_uninstall(dev);
 
 	if (dev->dev_private) {
 		drm_mach64_private_t *dev_priv = dev->dev_private;
