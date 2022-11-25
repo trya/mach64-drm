@@ -40,7 +40,6 @@
 #include <drm/drm_legacy.h>
 #include <drm/drm_print.h>
 #include <drm/drm_ioctl.h>
-#include <drm/drm_irq.h>
 
 /* General customization:
  */
